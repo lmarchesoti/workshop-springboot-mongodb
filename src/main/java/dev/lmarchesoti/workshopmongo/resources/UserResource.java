@@ -1,5 +1,6 @@
 package dev.lmarchesoti.workshopmongo.resources;
 
+import dev.lmarchesoti.workshopmongo.domain.Post;
 import dev.lmarchesoti.workshopmongo.domain.User;
 import dev.lmarchesoti.workshopmongo.dto.UserDTO;
 import dev.lmarchesoti.workshopmongo.services.UserService;
@@ -61,6 +62,12 @@ public class UserResource {
                                        @RequestBody UserDTO dto) {
         userService.update(id, dto);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable("id") String id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok().body(user.getPosts());
     }
 
 }
