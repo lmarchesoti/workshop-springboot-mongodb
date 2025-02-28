@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,18 @@ public class PostResource {
     public ResponseEntity<List<Post>> findPostByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
         String titlesearch = URL.decodeParam(text);
         List<Post> posts = postService.findByTitle(titlesearch);
+        return ResponseEntity.ok().body(posts);
+    }
+
+    @GetMapping(value = "/fullsearch")
+    public ResponseEntity<List<Post>> fullSearch(@RequestParam(value = "text", defaultValue = "") String text,
+                                                 @RequestParam(value = "startDate", defaultValue = "") String startDateStr,
+                                                 @RequestParam(value = "finalDate", defaultValue = "") String finalDateStr) {
+        String textsearch = URL.decodeParam(text);
+        Instant startDate = URL.decodeDate(startDateStr, Instant.EPOCH);
+        Instant finalDate = URL.decodeDate(finalDateStr, Instant.now());
+
+        List<Post> posts = postService.fullSearch(textsearch, startDate, finalDate);
         return ResponseEntity.ok().body(posts);
     }
 }
