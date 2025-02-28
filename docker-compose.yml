@@ -5,10 +5,10 @@ services:
     volumes:
       - mongodb-data:/data/db
     ports:
-      - '27017:27017'
+      - '28000:27017'
     environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: workshop_mongo
 
 volumes:
