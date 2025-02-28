@@ -13,13 +13,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.Collections;
 
 @Configuration
-@EnableMongoRepositories(basePackages = { "dev.lmarchesoti.workshopmongo.repository" })
+@EnableMongoRepositories(basePackages = { "dev.lmarchesoti.workshopmongo.repository" }, mongoTemplateRef = "myMongoTemplate")
 @EnableConfigurationProperties
 public class MyMongoDBConfig {
 
@@ -52,6 +53,13 @@ public class MyMongoDBConfig {
             @Qualifier("myMongoClient") MongoClient mongoClient,
             @Qualifier("myMongoProperties") MongoProperties mongoProperties) {
         return new SimpleMongoClientDatabaseFactory(mongoClient, mongoProperties.getDatabase());
+    }
+
+    @Bean(name = "myMongoTemplate")
+    @Primary
+    public MongoTemplate mongoTemplate(@Qualifier("myMongoClient") MongoClient mongoClient,
+                                       @Qualifier("myMongoProperties") MongoProperties mongoProperties) {
+        return new MongoTemplate(mongoClient, mongoProperties.getDatabase());
     }
 
 }

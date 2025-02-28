@@ -7,8 +7,10 @@ import dev.lmarchesoti.workshopmongo.dto.CommentDTO;
 import dev.lmarchesoti.workshopmongo.repository.PostRepository;
 import dev.lmarchesoti.workshopmongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -23,6 +25,10 @@ public class Instantiation implements CommandLineRunner {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    @Qualifier("myMongoTemplate")
+    private MongoTemplate mongoTemplate;
 
     @Override
     public void run(String... args) throws Exception {
